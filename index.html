@@ -1,24 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <style></style>
-</head>
-<body>
-  <html lang="vi">
-<head>
-  <meta charset="UTF-8"></meta>
-  <title>Text2 - HTML Editor</title>
+  <meta charset="UTF-8">
+  <title>Text2 - Read HTML | Online HTML, CSS, JS Reader & Extractor Tool</title>
+  <meta name="description" content="Text2 - Read HTML: An online tool to read, preview, extract, and download HTML, CSS, JavaScript code easily. Supports quick preview and file export.">
+  <meta name="keywords" content="text2, read html, html reader, extract css js, html tool online, html preview, html to css js, html editor">
+  <meta name="robots" content="index, follow">
   <link rel="icon" type="image/png" href="favicon.ico">
-<!-- Google tag (gtag.js) - GA4 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ABCDEFG123"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-6J85STMJ14');
-</script>
-
+  <link rel="canonical" href="https://html.text2.click/" />
+  <!-- Google tag (gtag.js) - GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ABCDEFG123"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-6J85STMJ14');
+  </script>
   <style>
     /* Reset CSS */
     #fullscreenPopup * {
@@ -211,11 +208,26 @@
       100% { transform: scale(1); }
     }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Text2 - Read HTML",
+    "description": "An online tool to read, preview, extract, and download HTML, CSS, JavaScript code easily.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "All",
+    "url": "https://html.text2.click/",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
 </head>
 <body>
   <div id="fullscreenPopup">
-    <h1>READ HTML TEXT2</h1>
-
+    <h1>Text2 - Read HTML: HTML, CSS, JS Reader & Extractor Tool</h1>
     <div class="container">
       <div class="upload-section section">
         <div>
@@ -236,30 +248,30 @@
         <div class="editor-wrapper">
           <label>HTML</label>
           <textarea id="htmlCode" placeholder="Type HTML code here..."></textarea>
-          <button onclick="downloadCode('html')">Tải xuống HTML</button>
+          <button onclick="downloadCode('html')">Download HTML</button>
         </div>
         <div class="editor-wrapper">
           <label>CSS</label>
           <textarea id="cssCode" placeholder="Type CSS code here..."></textarea>
-          <button onclick="downloadCode('css')">Tải xuống CSS</button>
+          <button onclick="downloadCode('css')">Download CSS</button>
         </div>
         <div class="editor-wrapper">
           <label>JavaScript</label>
           <textarea id="jsCode" placeholder="Type JavaScript code here..."></textarea>
-          <button onclick="downloadCode('js')">Tải xuống JavaScript</button>
+          <button onclick="downloadCode('js')">Download JavaScript</button>
         </div>
       </div>
 
       <div class="preview-button">
         <button onclick="preview()">RUN NOW</button>
-        <button onclick="downloadHTML()">Download .html </button>
-        <button onclick="extractCSSAndJS()" style="background: linear-gradient(135deg, #007bff, #0056b3);">detached CSS & JS</button>
+        <button onclick="downloadHTML()">Download .html</button>
+        <button onclick="extractCSSAndJS()" style="background: linear-gradient(135deg, #007bff, #0056b3);">Extract CSS & JS</button>
       </div>
 
       <div class="section">
-        <label>text2 run result </label>
+        <label>text2 run result</label>
         <button onclick="openInNewTab()" style="margin-bottom: 10px;">SEE ALL</button>
-        <iframe id="previewFrame"></iframe>
+        <iframe id="previewFrame" sandbox="allow-scripts"></iframe>
       </div>
     </div>
   </div>
@@ -281,8 +293,12 @@
     }
 
     function loadAndFill(input, textareaId) {
+      const textarea = document.getElementById(textareaId);
+      if (textarea.value.trim() !== '') {
+        if (!confirm('Nội dung cũ sẽ bị ghi đè. Tiếp tục?')) return;
+      }
       readFileContent(input, function(content) {
-        document.getElementById(textareaId).value = content;
+        textarea.value = content;
       });
     }
 
@@ -316,7 +332,7 @@
 
     function downloadHTML() {
       if (!generatedHTML) {
-        alert("Bạn cần nhấn 'RUN NOW' trước khi tải xuống.");
+        alert("You need to click 'RUN NOW' before downloading.");
         return;
       }
       const blob = new Blob([generatedHTML], { type: "text/html" });
@@ -366,7 +382,7 @@
 
     function openInNewTab() {
       if (!generatedHTML) {
-        alert("Bạn cần nhấn 'RUN NOW' trước khi mở trong tab mới.");
+        alert("You need to click 'RUN NOW' before opening in a new tab.");
         return;
       }
       const blob = new Blob([generatedHTML], { type: "text/html" });
@@ -377,60 +393,60 @@
     function extractCSSAndJS() {
       const htmlContent = document.getElementById('htmlCode').value;
       if (!htmlContent) {
-        alert("Vui lòng nhập HTML vào ô HTML trước khi tách CSS & JS");
+        alert("Please enter HTML in the HTML box before extracting CSS & JS");
         return;
       }
+      if ((document.getElementById('cssCode').value.trim() !== '' || document.getElementById('jsCode').value.trim() !== '')) {
+        if (!confirm('CSS hoặc JS hiện tại sẽ bị ghi đè. Tiếp tục?')) return;
+      }
 
-      // Create a temporary div to parse HTML
-      const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = htmlContent;
+      // Sử dụng DOMParser để phân tích HTML
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(htmlContent, 'text/html');
 
-      // Extract CSS
-      const styleElements = tempDiv.getElementsByTagName('style');
+      // Tách CSS từ thẻ <style>
       let extractedCSS = '';
-      for (let style of styleElements) {
+      doc.querySelectorAll('style').forEach(style => {
         extractedCSS += style.textContent + '\n';
-      }
+        style.remove();
+      });
 
-      // Extract inline styles
-      const elementsWithStyle = tempDiv.querySelectorAll('[style]');
-      for (let element of elementsWithStyle) {
-        extractedCSS += element.getAttribute('style') + '\n';
-      }
-
-      // Extract JS
-      const scriptElements = tempDiv.getElementsByTagName('script');
+      // Tách JS từ thẻ <script>
       let extractedJS = '';
-      for (let script of scriptElements) {
+      doc.querySelectorAll('script').forEach(script => {
         extractedJS += script.textContent + '\n';
-      }
+        script.remove();
+      });
 
-      // Update the textareas
+      // Tách inline style thành class
+      let styleCount = 0;
+      doc.querySelectorAll('[style]').forEach(element => {
+        styleCount++;
+        const className = 'extracted-style-' + styleCount;
+        extractedCSS += `.${className} { ${element.getAttribute('style')} }\n`;
+        element.classList.add(className);
+        element.removeAttribute('style');
+      });
+
+      // Lấy lại HTML đã làm sạch
+      const cleanHTML = doc.body.innerHTML;
+
+      // Cập nhật các textarea
       if (extractedCSS) {
-        document.getElementById('cssCode').value = extractedCSS;
+        document.getElementById('cssCode').value = extractedCSS.trim();
       }
       if (extractedJS) {
-        document.getElementById('jsCode').value = extractedJS;
+        document.getElementById('jsCode').value = extractedJS.trim();
       }
+      document.getElementById('htmlCode').value = cleanHTML.trim();
 
-      // Remove style and script tags from HTML
-      const cleanHTML = htmlContent
-        .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
-        .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-        .replace(/ style="[^"]*"/g, '');
-
-      document.getElementById('htmlCode').value = cleanHTML;
-
-      // Show success message
-      if (extractedCSS || extractedJS) {
-        alert("Đã tách CSS và JS thành công!");
+      // Thông báo kết quả
+      if (extractedCSS || extractedJS || styleCount > 0) {
+        alert("Đã tách thành công CSS và JS!");
       } else {
         alert("Không tìm thấy CSS hoặc JS trong HTML!");
       }
     }
   </script>
-</body>
-</html> 
-  <script></script>
 </body>
 </html>
